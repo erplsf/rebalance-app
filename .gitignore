@@ -2,3 +2,4 @@ assets/
 target/
 etc/
 **/*.rs.bk
+result
