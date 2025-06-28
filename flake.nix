@@ -2,15 +2,20 @@
   description = "rebalance-app";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
   };
-  outputs = { self, nixpkgs }:
-    let
-      supportedSystems = [ "x86_64-linux" "x86_64-darwin" ];
-      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-      pkgsFor = nixpkgs.legacyPackages;
-    in {
-      packages = forAllSystems (system: {
-        default = pkgsFor.${system}.callPackage ./. { };
-      });
-    };
+  outputs =
+    {
+      self,
+      flake-utils,
+      nixpkgs,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+      in
+      {
+        packages.default = nixpkgs.legacyPackages.${system}.callPackage ./. { };
+      }
+    );
 }
